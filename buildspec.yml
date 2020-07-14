@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto8
+    commands:
+      - echo "Installing phase"
+    finally:
+      - echo "Installing finally phase"
+  pre_build:
+    commands:
+      - echo "Pre Build phase"
+    finally:
+      - echo "Pre build finally phase"
+  build:
+    commands:
+      - echo "build phase"
+    finally:
+      - echo "build finally phase"
+  post_build:
+    commands:
+      - echo "post_build phase"
+    finally:
+      - echo "post_build finally phase"
