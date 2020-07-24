@@ -2,24 +2,27 @@ version: 0.2
 
 phases:
   install:
-    runtime-versions:
-      java: corretto8
     commands:
-      - echo "Installing phase"
-    finally:
-      - echo "Installing finally phase"
+      - echo "Install phase"
   pre_build:
     commands:
       - echo "Pre Build phase"
-    finally:
-      - echo "Pre build finally phase"
+      - echo "Logging into Amazon ECR"
+      - aws --version
+      - docker info
+      - $(aws ecr get-login --no-include-email --region ap-south-1 --registry-ids 267021221325)
+      - REPOSITORY_URI=267021221325.dkr.ecr.ap-south-1.amazonaws.com/eurekaserver
   build:
     commands:
-      - echo "build phase"
-    finally:
-      - echo "build finally phase"
+      - echo "Build phase"
+      - echo "Building Docker image..."
+      - docker build -t eurekaserver .
+      - docker tag eurekaserver:latest 267021221325.dkr.ecr.ap-south-1.amazonaws.com/eurekaserver:latest
   post_build:
     commands:
       - echo "post_build phase"
-    finally:
-      - echo "post_build finally phase"
+      - docker push 267021221325.dkr.ecr.ap-south-1.amazonaws.com/eurekaserver:latest
+      - printf '[{"name":"eurekaservice","imageUri":"%s"}]' 267021221325.dkr.ecr.ap-south-1.amazonaws.com/eurekaserver:latest > imagedefinitions.json
+  
+  artifacts:
+    files: imagedefinitions.json
