@@ -24,5 +24,5 @@ phases:
       - docker push 267021221325.dkr.ecr.ap-south-1.amazonaws.com/eurekaserver:latest
       - printf '[{"name":"eurekaservice","imageUri":"%s"}]' 267021221325.dkr.ecr.ap-south-1.amazonaws.com/eurekaserver:latest > imagedefinitions.json
   
-  artifacts:
-    files: imagedefinitions.json
+artifacts:
+  files: imagedefinitions.json
